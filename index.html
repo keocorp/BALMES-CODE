@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>BALMES CODE | ERP, facturación y páginas web</title>
+<meta name="description" content="Desarrollamos ERP, software de facturación y páginas web para empresas. Prueba cada producto aquí mismo.">
+<meta name="theme-color" content="#f1f3f5">
+<meta property="og:title" content="BALMES CODE">
+<meta property="og:description" content="Tu empresa, en una sola pieza. ERP, facturación y páginas web.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+<a class="skip" href="#contenido">Ir al contenido</a>
+
+<svg hidden>
+  <symbol id="b" viewBox="0 0 100 120">
+    <path class="p-erp" d="M14 0H26V120H14L0 106V14Z"/>
+    <path class="p-facturacion" d="M32 0H74L92 18V41L76 57H32V37H64L68 33V24L64 20H32Z"/>
+    <path class="p-web" d="M32 63H78L100 85V100L80 120H32V100H70L75 95V89L70 84H32Z"/>
+  </symbol>
+</svg>
+
+<header class="bar">
+  <a class="brand" href="#inicio"><svg aria-hidden="true"><use href="#b"/></svg><span>BALMES <b>CODE</b></span></a>
+  <button class="burger" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú"><i></i><i></i></button>
+  <nav id="menu" aria-label="Principal">
+    <a href="#erp">ERP</a><a href="#facturacion">Facturación</a><a href="#web">Páginas web</a><a href="#proceso">Cómo trabajamos</a>
+    <a class="btn dark" href="#contacto">Cotizar</a>
+  </nav>
+</header>
+
+<main id="contenido">
+<section class="hero" id="inicio">
+  <div class="hero-copy">
+    <h1>Tu empresa, en una sola pieza.</h1>
+    <p>Creamos el ERP, la facturación y la página web de tu negocio para que trabajen juntos. Uno, dos o los tres.</p>
+    <div class="row"><a class="btn gold" href="#contacto">Cotizar mi proyecto</a><a class="btn line" href="#erp">Probar los productos</a></div>
+  </div>
+  <div class="stage">
+    <svg class="fallback" aria-hidden="true"><use href="#b"/></svg>
+    <canvas id="metal" role="img" aria-label="Logo de BALMES CODE en oro y rodio, formado por tres piezas"></canvas>
+  </div>
+  <div class="picker">
+    <a href="#erp" data-piece="erp"><svg aria-hidden="true"><use href="#b"/></svg><span><b>ERP</b><em>La columna: ventas, almacén, caja y compras.</em></span></a>
+    <a href="#facturacion" data-piece="facturacion"><svg aria-hidden="true"><use href="#b"/></svg><span><b>Facturación</b><em>Boletas y facturas en pocos toques.</em></span></a>
+    <a href="#web" data-piece="web"><svg aria-hidden="true"><use href="#b"/></svg><span><b>Páginas web</b><em>La cara de tu negocio, hecha a medida.</em></span></a>
+  </div>
+</section>
+
+<div class="prod" data-tab="erp">
+<div class="tabs" role="group" aria-label="Elegir producto">
+  <button type="button" data-go="erp" aria-pressed="true">ERP</button><button type="button" data-go="facturacion" aria-pressed="false">Facturación</button><button type="button" data-go="web" aria-pressed="false">Página web</button>
+</div>
+<section class="erp" id="erp">
+  <div class="intro">
+    <h2>Una venta mueve todo lo demás</h2>
+    <p>Con un ERP no copias datos de un Excel a otro. Registra una venta y mira cómo se actualizan el almacén, la caja y la contabilidad.</p>
+    <div class="row"><button class="btn gold" id="sell">Registrar una venta</button><button class="btn line" id="erp-reset" hidden>Empezar de nuevo</button></div>
+    <p class="hint" id="erp-msg" aria-live="polite">Ejemplo: silla de oficina, S/ 350.00.</p>
+    <a class="more" href="#contacto" data-need="ERP">Cotizar un ERP</a>
+  </div>
+  <div class="plate">
+    <div class="mod" data-mod="ventas"><h3>Ventas</h3><p>Sillas vendidas hoy</p><output>0</output></div>
+    <div class="mod" data-mod="almacen"><h3>Almacén</h3><div class="stock" aria-hidden="true"></div><output>6</output></div>
+    <div class="mod" data-mod="caja"><h3>Caja</h3><p>Saldo del día</p><output>S/ 1,200.00</output></div>
+    <div class="mod" data-mod="conta"><h3>Contabilidad</h3><p>IGV del día</p><output>S/ 0.00</output></div>
+    <div class="mod" data-mod="compras"><h3>Compras</h3><p id="buy-note">Stock suficiente</p><button class="btn dark sm" id="restock" disabled>Reponer 4</button></div>
+  </div>
+</section>
+
+<section class="fact" id="facturacion">
+  <div class="intro">
+    <h2>Emite sin hacer esperar a tu cliente</h2>
+    <p>Arma un comprobante de prueba. El IGV se calcula solo mientras agregas productos.</p>
+  </div>
+  <form class="pos" id="pos" novalidate>
+    <fieldset class="seg"><legend class="sr">Tipo de comprobante</legend>
+      <label><input type="radio" name="tipo" value="boleta" checked><span>Boleta</span></label>
+      <label><input type="radio" name="tipo" value="factura"><span>Factura</span></label>
+    </fieldset>
+    <div class="field"><label for="doc" id="doc-label">DNI del cliente (opcional)</label>
+      <input id="doc" inputmode="numeric" maxlength="8" autocomplete="off" aria-describedby="doc-err"></div>
+    <ul class="items" id="items"></ul>
+    <p class="err" id="doc-err" role="alert"></p>
+    <button class="btn dark wide" type="submit">Emitir comprobante</button>
+    <a class="more" href="#contacto" data-need="Facturación">Cotizar facturación</a>
+  </form>
+  <div class="printer"><div class="slot"></div><div class="paper-wrap"><article class="paper" id="paper" aria-label="Vista previa del comprobante"></article></div></div>
+</section>
+
+<section class="web" id="web">
+  <div class="intro">
+    <h2>Así se vería tu negocio</h2>
+    <p>Escribe un nombre, elige tu rubro y cambia el color. Es solo un boceto: la página real se diseña desde cero para ti.</p>
+  </div>
+  <div class="builder">
+    <div class="field"><label for="biz">Nombre del negocio</label><input id="biz" maxlength="26" value="La Esquina" autocomplete="off"></div>
+    <fieldset class="seg"><legend>Rubro</legend>
+      <label><input type="radio" name="rubro" value="restaurante" checked><span>Restaurante</span></label>
+      <label><input type="radio" name="rubro" value="clinica"><span>Clínica</span></label>
+      <label><input type="radio" name="rubro" value="tienda"><span>Tienda</span></label></fieldset>
+    <fieldset class="tones"><legend>Color</legend>
+      <label style="--c:#9c2f24"><input type="radio" name="tono" value="#9c2f24" checked><span class="sr">Rojo ladrillo</span></label>
+      <label style="--c:#17614b"><input type="radio" name="tono" value="#17614b"><span class="sr">Verde</span></label>
+      <label style="--c:#1f4e8c"><input type="radio" name="tono" value="#1f4e8c"><span class="sr">Azul</span></label>
+      <label style="--c:#6a3a7c"><input type="radio" name="tono" value="#6a3a7c"><span class="sr">Morado</span></label></fieldset>
+    <fieldset class="seg screens"><legend>Pantalla</legend>
+      <label><input type="radio" name="disp" value="pc" checked><span>Computadora</span></label>
+      <label><input type="radio" name="disp" value="cel"><span>Celular</span></label></fieldset>
+    <a class="more" href="#contacto" data-need="Página web">Cotizar una página web</a>
+  </div>
+  <div class="desk"><div class="device" id="device"><div class="url"><i></i><span id="url"></span></div><div class="site" id="site"></div></div></div>
+</section>
+
+</div>
+
+<section class="proc" id="proceso">
+  <h2>Cómo trabajamos</h2>
+  <ol>
+    <li><h3>Conversamos</h3><p>Nos cuentas cómo trabajas hoy y qué te quita tiempo.</p></li>
+    <li><h3>Proponemos</h3><p>Recibes una propuesta con alcance, plazo y precio por escrito.</p></li>
+    <li><h3>Construimos</h3><p>Ves avances y los pruebas antes de que todo esté terminado.</p></li>
+    <li><h3>Acompañamos</h3><p>Capacitamos a tu equipo y seguimos contigo después de la entrega.</p></li>
+  </ol>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="intro">
+    <h2>Cuéntanos qué necesitas</h2>
+    <p>Marca lo que te interesa y te respondemos con los siguientes pasos.</p>
+    <div class="faq">
+      <details name="faq"><summary>¿Puedo empezar con un solo producto?</summary><p>Sí. Puedes comenzar con facturación y sumar el ERP o la página web más adelante.</p></details>
+      <details name="faq"><summary>¿Se adapta a mi rubro?</summary><p>Antes de cotizar revisamos cómo trabajas. Con eso definimos qué se usa tal cual y qué se desarrolla a medida.</p></details>
+      <details name="faq"><summary>¿Cuánto cuesta?</summary><p>Depende de los módulos y del tamaño de tu equipo. Escríbenos y preparamos una propuesta para tu caso.</p></details>
+    </div>
+  </div>
+  <form id="lead" novalidate>
+    <fieldset class="chips"><legend>Me interesa</legend>
+      <label><input type="checkbox" name="need" value="ERP"><span>ERP</span></label>
+      <label><input type="checkbox" name="need" value="Facturación"><span>Facturación</span></label>
+      <label><input type="checkbox" name="need" value="Página web"><span>Página web</span></label></fieldset>
+    <div class="two">
+      <div class="field"><label for="nombre">Tu nombre</label><input id="nombre" autocomplete="name" aria-describedby="nombre-err"><p class="err" id="nombre-err" role="alert"></p></div>
+      <div class="field"><label for="empresa">Empresa (opcional)</label><input id="empresa" autocomplete="organization"></div>
+    </div>
+    <div class="field"><label for="msg">¿Qué quieres resolver?</label><textarea id="msg" rows="4"></textarea></div>
+    <button class="btn gold wide" type="submit" id="send">Copiar mensaje</button>
+    <p class="hint" id="lead-msg" aria-live="polite"></p>
+  </form>
+</section>
+</main>
+
+<footer><a class="brand" href="#inicio"><svg aria-hidden="true"><use href="#b"/></svg><span>BALMES <b>CODE</b></span></a>
+  <p>ERP, facturación y páginas web</p><a id="mail" hidden></a><p>© <span id="year"></span> BALMES CODE</p></footer>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
