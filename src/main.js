@@ -73,7 +73,10 @@ import('./metal.js').then(({ mountMetal }) => {
     addEventListener('scroll', scroll, { passive: true });
     scroll();
   }
-}).catch(err => console.warn('Sin WebGL: se muestra el logo plano.', err));
+}).catch(err => {
+  $('.stage').classList.add('flat');
+  console.warn('Sin WebGL: se muestra el logo plano.', err);
+});
 
 /* Proceso: la línea se llena al bajar */
 const ol = $('.proc ol');

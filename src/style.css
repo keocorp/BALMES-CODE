@@ -90,7 +90,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .stage canvas:active { cursor: grabbing; }
 .stage::after { content: ''; position: absolute; left: 24%; right: 22%; bottom: 4%; height: 34px; background: radial-gradient(closest-side, #1a1c2166, transparent); filter: blur(8px); pointer-events: none; }
 .fallback { position: absolute; inset: 14% 20%; width: 60%; height: 72%; }
-.ready .fallback { display: none; }
+.stage:not(.flat) .fallback { display: none; }
+.stage canvas, .stage::after { opacity: 0; transition: opacity 280ms var(--out); }
+.stage.ready canvas, .stage.ready::after { opacity: 1; }
 .picker { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); background: #ffffff75; border-top: 1px solid var(--rh-3); }
 .picker a { display: flex; align-items: center; gap: 18px; padding: 20px clamp(16px, 3vw, 40px); text-decoration: none; color: #33373e; line-height: 1.35; transition: background-color 180ms; }
 .picker a:first-child { padding-left: var(--pad); }
