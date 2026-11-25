@@ -236,6 +236,25 @@ section:not(.hero) { padding: clamp(72px, 9vw, 136px) var(--pad); }
 .proc li::before { content: counter(n); font: 700 2.8rem/1 var(--disp); color: var(--gold-ink); }
 .proc li p { color: var(--ink-2); max-width: 30ch; }
 
+.stage-art { width: min(100%, 210px); aspect-ratio: 1; display: block; margin: 0 0 6px -4px; fill: none; stroke-linejoin: round; stroke-linecap: round; overflow: visible; }
+.stage-art path { vector-effect: non-scaling-stroke; }
+.stage-art .g { stroke: #a4abb5; stroke-width: 1; }
+.a1 path { stroke: #4b525c; stroke-width: 1.7; }
+.a1 .r { stroke: #4b525c80; stroke-width: 1.1; }
+.a2 .o { stroke: var(--ink); stroke-width: 1.8; }
+.a2 .c { stroke: var(--gold-ink); stroke-width: 1.3; }
+.a2 rect { fill: var(--rh-0); }
+.a2 text { fill: var(--gold-ink); stroke: none; font: 600 10.5px var(--text); text-anchor: middle; }
+.stage-art .rh { fill: url(#et-rodio); stroke: #7d8691; stroke-width: 1; }
+.stage-art .or { fill: url(#et-oro); stroke: #9a6c10; stroke-width: 1; }
+.a4 .d { fill: #666d77; }
+.a4 .dk { fill: #7a540c; }
+.a4 .s { fill: #1a1c2130; filter: blur(3px); }
+@media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+  .stage-art { transition: opacity 400ms var(--out), transform 400ms var(--out); }
+  .wait .stage-art { opacity: .25; transform: scale(.96); }
+}
+
 /* Contacto */
 .contact { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(40px, 7vw, 120px); background: var(--metal-rh); }
 #lead { display: grid; gap: 24px; align-content: start; }
@@ -266,9 +285,9 @@ footer :focus-visible { outline-color: var(--gold); }
   .picker a + a { border-left: 0; border-top: 1px solid var(--rh-3); }
   .erp, .fact, .web, .contact { grid-template-columns: minmax(0, 1fr); }
   .desk { min-height: 0; }
-  .proc ol { grid-template-columns: 1fr; padding: 0 0 0 34px; }
-  .proc ol::before, .proc ol::after { width: 6px; height: 100%; }
-  .proc ol::after { transform-origin: top; transform: scaleY(var(--k)); }
+  .proc ol { grid-template-columns: 1fr 1fr; gap: 44px 32px; padding: 0; }
+  .proc ol::before, .proc ol::after { display: none; }
+  .proc li { border-top: 6px solid var(--gold); padding-top: 18px; }
 }
 @media (max-width: 520px) {
   .two { grid-template-columns: minmax(0, 1fr); }
@@ -353,7 +372,10 @@ footer :focus-visible { outline-color: var(--gold); }
   .proc ol { grid-template-columns: 1fr 1fr; gap: 26px 20px; padding: 0; margin-top: 24px; }
   .proc ol::before, .proc ol::after { display: none; }
   .proc li { border-top: 4px solid var(--gold); padding-top: 12px; gap: 4px; line-height: 1.45; }
-  .proc li::before { font-size: 1.7rem; }
+  .proc li { position: relative; }
+  .proc li::before { font-size: 1.7rem; min-height: 78px; }
+  .stage-art { position: absolute; right: 0; top: 10px; width: 84px; margin: 0; }
+  .a2 .n { display: none; }
   .proc h3 { font-size: 1.05rem; }
 
   .contact { gap: 18px; }
@@ -372,6 +394,8 @@ footer :focus-visible { outline-color: var(--gold); }
 @media (max-width: 350px) {
   .tabs button, .chips span, .seg span { font-size: .92rem; }
   .hero .btn { font-size: .94rem; }
+  .proc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 14px; }
+  .proc h3 { font-size: .9rem; }
 }
 /* Safari aún no corta esquinas con corner-shape: se recortan con clip-path */
 @supports not (corner-shape: bevel) {

@@ -87,6 +87,8 @@ const ol = $('.proc ol');
 const fill = () => {
   const k = (innerHeight * 0.85 - ol.getBoundingClientRect().top) / (innerHeight * 0.42);
   ol.style.setProperty('--k', reduced ? 1 : Math.max(0, Math.min(1, k)));
+  // Cada etapa se enciende cuando la línea dorada llega a ella.
+  [...ol.children].forEach((li, i) => li.classList.toggle('wait', !reduced && k < i / 4 + 0.04));
 };
 addEventListener('scroll', fill, { passive: true });
 fill();
