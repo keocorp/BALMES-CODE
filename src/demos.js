@@ -172,5 +172,13 @@ function site() {
   $('#url').textContent = `www.${slug}.com`;
   $('#device').classList.toggle('cel', $('[name=disp]:checked').value === 'cel');
 }
-$('.builder').addEventListener('input', site);
+$('.builder').addEventListener('input', e => {
+  site();
+  // El rubro cambia toda la página: un fundido breve evita el salto. Escribir el nombre no anima.
+  if (e.target.name === 'rubro') {
+    const el = $('#site');
+    el.getAnimations().forEach(a => a.cancel());
+    el.animate([{ opacity: 0.2, filter: reduced ? 'none' : 'blur(2px)' }, { opacity: 1, filter: 'none' }], { duration: 200, easing: 'cubic-bezier(.23, 1, .32, 1)' });
+  }
+});
 site();

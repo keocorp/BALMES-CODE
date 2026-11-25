@@ -21,8 +21,16 @@ addEventListener('keydown', e => {
 /* Productos: en el celular se muestra uno a la vez */
 const prod = $('.prod');
 const tabs = $$('.tabs button');
+const sections = { erp: $('#erp'), facturacion: $('#facturacion'), web: $('#web') };
 const setTab = id => {
+  const order = Object.keys(sections);
+  const dir = Math.sign(order.indexOf(id) - order.indexOf(prod.dataset.tab));
   prod.dataset.tab = id;
+  // En el celular el producto entra desde el lado de su pestaña.
+  if (dir && getComputedStyle(tabs[0].parentElement).display !== 'none') {
+    sections[id].getAnimations().forEach(a => a.cancel());
+    sections[id].animate([{ opacity: 0, transform: reduced ? 'none' : `translateX(${dir * 12}px)` }, { opacity: 1, transform: 'none' }], { duration: 200, easing: 'cubic-bezier(.23, 1, .32, 1)' });
+  }
   tabs.forEach(b => b.setAttribute('aria-pressed', b.dataset.go === id));
 };
 const isProduct = id => tabs.some(b => b.dataset.go === id);
@@ -50,29 +58,25 @@ const spy = new IntersectionObserver(es => es.forEach(e => {
 }), { rootMargin: '-45% 0px -50%' });
 links.forEach((_, id) => spy.observe(document.getElementById(id)));
 
-/* Brillo que sigue al cursor en los botones dorados */
+/* Brillo que sigue al cursor en los botones dorados y en el nombre */
 addEventListener('pointermove', e => {
-  const b = e.target.closest?.('.btn.gold');
+  const b = e.target.closest?.('.btn.gold, .brand');
   if (b) b.style.setProperty('--mx', `${(e.clientX - b.getBoundingClientRect().left) / b.offsetWidth * 100}%`);
 }, { passive: true });
 
 /* Logo 3D */
 const picks = $$('.picker a');
 import('./metal.js').then(({ mountMetal }) => {
-  const canvas = $('#metal');
-  const m = mountMetal(canvas, { reduced });
+  const stage = $('.stage');
+  const m = mountMetal($('#metal'), stage, { reduced });
+  document.body.classList.add('metal-on');
   $('.stage').classList.add('ready');
   m.onPick(id => { setTab(id); document.getElementById(id).scrollIntoView(); });
   picks.forEach(a => {
     for (const ev of ['pointerenter', 'focus']) a.addEventListener(ev, () => m.setActive(a.dataset.piece));
     for (const ev of ['pointerleave', 'blur']) a.addEventListener(ev, () => m.setActive(null));
   });
-  canvas.addEventListener('piece', e => picks.forEach(a => a.classList.toggle('on', a.dataset.piece === e.detail)));
-  if (!reduced) {
-    const scroll = () => m.setSpread(Math.max(0, Math.min(1, (scrollY - 60) / (innerHeight * 0.6))));
-    addEventListener('scroll', scroll, { passive: true });
-    scroll();
-  }
+  stage.addEventListener('piece', e => picks.forEach(a => a.classList.toggle('on', a.dataset.piece === e.detail)));
 }).catch(err => {
   $('.stage').classList.add('flat');
   console.warn('Sin WebGL: se muestra el logo plano.', err);
