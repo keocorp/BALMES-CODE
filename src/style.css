@@ -21,7 +21,7 @@ body { font: 400 1.0625rem/1.6 var(--text); color: var(--ink); background: var(-
 ::selection { background: var(--gold); color: var(--ink); }
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 h1, h2, h3 { font-family: var(--disp); font-weight: 650; font-stretch: 108%; line-height: 1.04; letter-spacing: -.02em; text-wrap: balance; }
-h1 { font-size: clamp(2.6rem, 5.4vw, 5.4rem); font-weight: 700; }
+h1 { font-size: clamp(2.6rem, 6.2vw, 6.2rem); font-weight: 700; }
 h2 { font-size: clamp(2rem, 3.7vw, 3.5rem); }
 h3 { font-size: 1.2rem; letter-spacing: 0; }
 p { text-wrap: pretty; max-width: 62ch; }
@@ -84,7 +84,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .hero { display: grid; grid-template: 1fr auto / minmax(0, 1.05fr) minmax(0, 1fr); min-height: calc(100svh - 70px); background: var(--metal-rh); }
 .hero-copy { align-self: center; padding: 48px 0 48px var(--pad); display: grid; gap: 28px; position: relative; z-index: 1; pointer-events: none; }
 .hero-copy > * { pointer-events: auto; }
-.hero-copy > p { font-size: 1.22rem; color: #33373e; max-width: 46ch; }
+
 .stage { position: relative; min-height: 420px; margin-left: -60px; }
 .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
 .stage canvas:active { cursor: grabbing; }
@@ -131,6 +131,7 @@ section:not(.hero) { padding: clamp(72px, 9vw, 136px) var(--pad); }
 .fact { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 52px clamp(32px, 7vw, 120px); background: linear-gradient(100deg, #d0a038, #e6c469 38%, #d9ad47 70%, #cf9f37); align-items: start; }
 .fact .intro { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: end; }
 .fact h2 { max-width: 15ch; }
+.fact .intro > p { justify-self: center; align-self: center; text-align: center; }
 .pos { display: grid; gap: 22px; justify-items: start; }
 .pos .field, .items { width: 100%; }
 .pos .err:empty { display: none; }
@@ -267,13 +268,13 @@ footer :focus-visible { outline-color: var(--gold); }
   :root { --bar: 60px; --tabs: 60px; }
   html { scroll-padding-top: calc(var(--bar) + var(--tabs)); }
   section:not(.hero) { padding: 36px var(--pad) 44px; }
-  h1 { font-size: clamp(2.1rem, 10.2vw, 3rem); }
+  h1 { font-size: clamp(2.1rem, 12.4vw, 4.6rem); }
   h2 { font-size: clamp(1.6rem, 7.4vw, 2.2rem); }
   .bar { min-height: var(--bar); padding-block: 6px; }
   .bar, footer { padding-left: max(var(--pad), env(safe-area-inset-left)); padding-right: max(var(--pad), env(safe-area-inset-right)); }
   .bar nav { max-height: calc(100dvh - var(--bar)); overflow-y: auto; overscroll-behavior: contain; }
   .intro { gap: 14px; }
-  .intro > p:not(.hint), .hero-copy > p { font-size: 1.0625rem; line-height: 1.5; }
+  .intro > p:not(.hint) { font-size: 1.0625rem; line-height: 1.5; }
 
   .hero { min-height: calc(100svh - var(--bar)); grid-template: auto minmax(200px, 1fr) auto / minmax(0, 1fr); }
   .hero-copy { padding-top: 28px; gap: 16px; }
