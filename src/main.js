@@ -1,4 +1,5 @@
 import './demos.js';
+import './guide.js';
 import { CONFIG } from './config.js';
 import { $, $$, reduced } from './util.js';
 
