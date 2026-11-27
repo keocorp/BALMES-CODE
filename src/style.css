@@ -70,9 +70,6 @@ button, input, textarea { font: inherit; color: inherit; }
 .brand span { background-image: linear-gradient(102deg, #22262d 10%, #434a53 32%, #868e99 39%, #3a4049 45%, #262a31 62%, #7d8691 74%, #2b3038 84%); }
 .brand b { background-image: linear-gradient(102deg, #8f5c06 8%, #b97c0e 26%, #dda72f 39%, #bd8110 47%, #a06a08 62%, #e3b348 74%, #94600a 86%); }
 @keyframes reflejo { from { background-position: 100% 0; } }
-footer .brand { filter: none; }
-footer .brand span { background-image: linear-gradient(102deg, #f4f6f8, #b5bcc6 30%, #fff 42%, #cdd3db 60%, #fff 76%, #aab2bd); }
-footer .brand b { background-image: linear-gradient(102deg, #d99f2c, #efc255 28%, #fff0bd 42%, #e0ab3c 58%, #ffe69c 76%, #d0962a); }
 @media (max-width: 1080px) { .brand { font-size: 1.7rem; } }
 @media (max-width: 350px) { .brand { font-size: 1.3rem; } }
 .p-erp { fill: var(--c-erp, #8d949e); }
@@ -165,6 +162,12 @@ section:not(.hero) { padding: clamp(72px, 9vw, 136px) var(--pad); }
 .fact .more { text-decoration-color: var(--ink); }
 .printer { width: min(100%, 430px); justify-self: center; padding: 0 14px; }
 .slot { height: 18px; border-radius: 9px; background: linear-gradient(#26292f, #0f1012 60%, #3a3e46); margin: 0 -14px; position: relative; z-index: 2; box-shadow: 0 8px 14px -6px #4a340077; }
+/* Luz de la ticketera: apagada en reposo, dorada y titilando mientras imprime */
+.slot::after { content: ''; position: absolute; right: 22px; top: 6px; width: 6px; height: 6px; border-radius: 50%; background: #4a4e56; transition: background-color 200ms ease, box-shadow 200ms ease; }
+.slot.printing { animation: zumbido 90ms linear infinite; }
+.slot.printing::after { background: var(--gold-hi); box-shadow: 0 0 8px 1px #f3cf6d; animation: titila 280ms steps(2) infinite; }
+@keyframes zumbido { 50% { transform: translateY(.6px); } }
+@keyframes titila { 50% { opacity: .45; } }
 .paper-wrap { overflow: hidden; margin-top: -8px; }
 .paper { position: relative; background: #fff; padding: 40px 28px 92px; min-height: 420px; mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 18px 51% repeat-x, linear-gradient(#000 0 0) top / 100% 50% no-repeat; }
 .paper header { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1.5px dashed var(--rh-3); line-height: 1.4; }
@@ -177,7 +180,7 @@ section:not(.hero) { padding: clamp(72px, 9vw, 136px) var(--pad); }
 .paper dd { text-align: right; margin: 0; }
 .paper .tot { font: 700 1.4rem var(--disp); padding-top: 6px; }
 .legal { font-size: .9rem; color: var(--ink-2); margin-top: 18px; }
-.stamp { position: absolute; right: 24px; bottom: 34px; rotate: -8deg; padding: 6px 20px; border: 4px solid #8a640f; color: #8a640f; background: #ffffffd9; border-radius: 10px; font: 700 1.3rem var(--disp); animation: stamp 260ms 820ms var(--out) both; }
+.stamp { position: absolute; right: 24px; bottom: 34px; rotate: -8deg; padding: 6px 20px; border: 4px solid #8a640f; color: #8a640f; background: #ffffffd9; border-radius: 10px; font: 700 1.3rem var(--disp); animation: stamp 260ms 1120ms var(--out) both; }
 @keyframes stamp { from { opacity: 0; transform: scale(1.5); } }
 
 /* Páginas web */
@@ -255,6 +258,33 @@ section:not(.hero) { padding: clamp(72px, 9vw, 136px) var(--pad); }
   .wait .stage-art { opacity: .25; transform: scale(.96); }
 }
 
+/* Nosotros: la única sección oscura, donde el oro y el rodio brillan más */
+.about { background: var(--ink); color: #c9ced6; }
+.about ::selection { background: var(--gold); color: var(--ink); }
+.about :focus-visible { outline-color: var(--gold); }
+.about h2 { max-width: 20ch; font-size: clamp(2.3rem, 5vw, 4.6rem); line-height: 1.02; }
+.about h2 span:first-child { color: #dfe3e8; }
+.about h2 span:last-child { color: #e2b448; }
+.creed { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 80px); margin-top: clamp(48px, 6vw, 88px); padding-top: clamp(28px, 3vw, 44px); border-top: 1px solid #3a3f47; }
+.creed article { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 22px; align-items: start; }
+.creed svg { height: 96px; width: auto; display: block; }
+.creed article:first-child path { fill: url(#et-rodio); }
+.creed article:last-child path { fill: url(#et-oro); }
+.creed h3 { font-size: 1.5rem; color: #fff; margin-bottom: 10px; }
+.creed p { line-height: 1.65; max-width: 56ch; }
+/* Lámpara (solo PC): una luz cálida sigue al cursor y hace brillar las piezas de la B */
+@property --lx { syntax: '<length-percentage>'; inherits: false; initial-value: 50%; }
+@property --ly { syntax: '<length-percentage>'; inherits: false; initial-value: 30%; }
+@property --la { syntax: '<number>'; inherits: false; initial-value: 0; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .about {
+    background: radial-gradient(560px circle at var(--lx) var(--ly), rgb(226 180 72 / calc(var(--la) * .13)), rgb(223 227 232 / calc(var(--la) * .04)) 45%, transparent 72%), var(--ink);
+    transition: --lx 550ms var(--out), --ly 550ms var(--out), --la 450ms ease;
+  }
+  .about.lamp { --la: 1; }
+  .creed svg { transition: filter 450ms var(--out); }
+}
+
 /* ¿Qué necesito? */
 .guide { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(32px, 6vw, 96px); align-items: center; background: var(--rh-1); }
 .g-art svg { width: min(100%, 300px); display: block; margin: auto; overflow: visible; }
@@ -291,6 +321,20 @@ section:not(.hero) { padding: clamp(72px, 9vw, 136px) var(--pad); }
 
 footer { background: var(--ink); color: #c9ced6; padding: 40px var(--pad); display: flex; flex-wrap: wrap; gap: 16px 40px; align-items: center; justify-content: space-between; }
 footer :focus-visible { outline-color: var(--gold); }
+/* Firma grabada: el nombre ocupa todo el ancho, hundido en el metal oscuro.
+   En PC un reflejo la recorre una vez al llegar; en celular queda quieta. */
+footer { container-type: inline-size; }
+.firma { flex: 1 0 100%; display: flex; justify-content: space-between; gap: .22em; font: 800 11.2cqi/.86 var(--disp); font-stretch: 122%; letter-spacing: -.02em; text-decoration: none; white-space: nowrap; filter: drop-shadow(0 -1px 0 #000) drop-shadow(0 1px 0 #ffffff1f); }
+.firma span, .firma b { font-weight: inherit; padding-block: .06em; background-size: 300% 100%, 100% 100%; background-position: 100% 0, 0 0; background-repeat: no-repeat; -webkit-background-clip: text; background-clip: text; color: transparent; }
+.firma span { background-image: linear-gradient(100deg, transparent 38%, #ffffffb8 50%, transparent 62%), linear-gradient(180deg, #535a64, #333840 55%, #434951); }
+.firma b { background-image: linear-gradient(100deg, transparent 38%, #fff3c8c4 50%, transparent 62%), linear-gradient(180deg, #9a6f1c, #634710 55%, #7f5b15); }
+.firma:hover span, .firma:hover b { background-image: linear-gradient(100deg, transparent 38%, #ffffffb8 50%, transparent 62%), linear-gradient(180deg, #666e79, #40454e 55%, #545a63); }
+.firma:hover b { background-image: linear-gradient(100deg, transparent 38%, #fff3c8c4 50%, transparent 62%), linear-gradient(180deg, #b48322, #775614 55%, #946b1b); }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .firma.lit span, .firma.lit b { animation: grabado 1.6s cubic-bezier(.77, 0, .175, 1) both; }
+  .firma.lit b { animation-delay: 120ms; }
+}
+@keyframes grabado { from { background-position: 100% 0, 0 0; } to { background-position: 0 0, 0 0; } }
 
 @media (max-width: 900px) {
   .burger { display: block; }
@@ -399,6 +443,12 @@ footer :focus-visible { outline-color: var(--gold); }
   .a2 .n { display: none; }
   .proc h3 { font-size: 1.05rem; }
 
+  .about h2 { font-size: clamp(1.75rem, 8.4vw, 2.6rem); }
+  .creed { grid-template-columns: minmax(0, 1fr); gap: 28px; margin-top: 28px; padding-top: 24px; }
+  .creed article { gap: 14px; }
+  .creed svg { height: 54px; }
+  .creed h3 { font-size: 1.2rem; margin-bottom: 4px; }
+  .creed p { line-height: 1.55; }
   .guide { grid-template-columns: minmax(0, 1fr); position: relative; }
   .g-art { position: absolute; right: var(--pad); top: 30px; width: 54px; }
   .g-main > h2 { margin-bottom: 16px; padding-right: 74px; }

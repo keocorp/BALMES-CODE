@@ -65,6 +65,37 @@ addEventListener('pointermove', e => {
   if (b) b.style.setProperty('--mx', `${(e.clientX - b.getBoundingClientRect().left) / b.offsetWidth * 100}%`);
 }, { passive: true });
 
+/* Nosotros: la lámpara sigue al cursor (solo PC con mouse) */
+const about = $('.about');
+const lampOn = matchMedia('(hover: hover) and (pointer: fine)');
+const pieces = $$('.creed svg');
+let lampFrame = 0;
+about.addEventListener('pointermove', e => {
+  if (!lampOn.matches || reduced || lampFrame) return;
+  lampFrame = requestAnimationFrame(() => {
+    lampFrame = 0;
+    const r = about.getBoundingClientRect();
+    about.style.setProperty('--lx', `${e.clientX - r.left}px`);
+    about.style.setProperty('--ly', `${e.clientY - r.top}px`);
+    about.classList.add('lamp');
+    // Cada pieza brilla más cuanto más cerca pasa la luz.
+    pieces.forEach(s => {
+      const b = s.getBoundingClientRect();
+      const k = Math.max(0, 1 - Math.hypot(e.clientX - b.left - b.width / 2, e.clientY - b.top - b.height / 2) / 420);
+      s.style.filter = k ? `brightness(${1 + k * 0.4}) drop-shadow(0 0 ${k * 14}px rgb(226 180 72 / ${k * 0.45}))` : '';
+    });
+  });
+});
+about.addEventListener('pointerleave', () => {
+  about.classList.remove('lamp');
+  pieces.forEach(s => { s.style.filter = ''; });
+});
+
+/* Pie: el reflejo recorre la firma una vez, cuando se ve completa */
+new IntersectionObserver(([e], o) => {
+  if (e.isIntersecting) { e.target.classList.add('lit'); o.disconnect(); }
+}, { threshold: 0.9 }).observe($('.firma'));
+
 /* Logo 3D */
 const picks = $$('.picker a');
 import('./metal.js').then(({ mountMetal }) => {

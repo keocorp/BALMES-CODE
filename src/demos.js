@@ -97,8 +97,17 @@ function reopen() {
   if (issued) { issued = false; seq[type]++; }
   docErr('');
 }
+// La ticketera térmica avanza el papel a tirones, línea por línea, y la ranura vibra mientras imprime.
+const FEED = [[-100, 0], [-76, .17], [-76, .25], [-51, .42], [-51, .5], [-26, .67], [-26, .74], [0, .92], [0, 1]];
+let feed;
 function print() {
-  if (!reduced) $('#paper').animate([{ transform: 'translateY(-100%)' }, { transform: 'none' }], { duration: 900, easing: 'cubic-bezier(.3,.7,.2,1)' });
+  if (reduced) return;
+  feed?.cancel();
+  const slot = $('#facturacion .slot');
+  slot.classList.add('printing');
+  const a = feed = $('#paper').animate(FEED.map(([y, offset]) => ({ transform: `translateY(${y}%)`, offset, easing: 'cubic-bezier(.23, 1, .32, 1)' })), { duration: 1150 });
+  // Si se vuelve a emitir antes de terminar, la luz queda en manos de la impresión nueva.
+  a.finished.catch(() => {}).then(() => { if (feed === a) slot.classList.remove('printing'); });
 }
 $('#items').addEventListener('click', e => {
   const b = e.target.closest('button');
